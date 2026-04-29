@@ -3,10 +3,7 @@ import 'package:camera/camera.dart';
 
 // A screen that allows users to take a picture using a given camera.
 class TakePictureScreen extends StatefulWidget {
-  const TakePictureScreen({
-    super.key,
-    required this.camera,
-  });
+  const TakePictureScreen({super.key, required this.camera});
 
   final CameraDescription camera;
 
@@ -41,7 +38,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     super.dispose();
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Take a picture - NIM Anda')),
@@ -59,6 +56,25 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             return const Center(child: CircularProgressIndicator());
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        // Provide an onPressed callback.
+        onPressed: () async {
+          // Take the Picture in a try / catch block. If anything goes wrong,
+          // catch the error.
+          try {
+            // Ensure that the camera is initialized.
+            await _initializeControllerFuture;
+
+            // Attempt to take a picture and then get the location
+            // where the image file is saved.
+            final image = await _controller.takePicture();
+          } catch (e) {
+            // If an error occurs, log the error to the console.
+            print(e);
+          }
+        },
+        child: const Icon(Icons.camera_alt),
       ),
     );
   }
